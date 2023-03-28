@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capitalization Table</title>
+    <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+  
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 11px;
+          line-height: 1.5;
+        }
+  
+        form {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 2rem;
+        }
+  
+        label {
+          display: block;
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+  
+        input {
+          display: block;
+          width: 100%;
+          padding: 0.5rem;
+          margin-bottom: 1rem;
+          border-radius: 0.25rem;
+          border: 1px solid #ccc;
+          transition: border-color 0.3s ease-in-out;
+        }
+  
+        input:focus {
+          outline: none;
+          border-color: #007bff;
+        }
+  
+        button[type="submit"] {
+          display: block;
+          margin-top: 1rem;
+          padding: 0.5rem;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 0.25rem;
+          cursor: pointer;
+        }
+  
+        button[type="submit"]:hover {
+          background-color: #0069d9;
+        }
+      </style>
+  </head>
+  <body>
+    <h1>Capitalization Table</h1>
+   
+    <form method="post" action="{{ url_for('submit') }}">
+      <table>
+        <tr>
+          <td>
+            <label for="value">Value:</label>
+          </td>
+          <td>
+            <input type="text" name="value" id="value" required>
+          </td>
+          <td>
+            <label for="series">Series:</label>
+          </td>
+          <td>
+            <input type="text" name="series" id="series" required>
+          </td>
+          <td>
+            <label for="security_type">Security Type:</label>
+          </td>
+          <td>
+            <input type="text" name="security_type" id="security_type" required>
+          </td>
+          <td>
+            <label for="investment">Investment:</label>
+          </td>
+          <td>
+            <input type="text" name="investment" id="investment" required>
+          </td>
+          <td>
+            <label for="shares">Shares:</label>
+          </td>
+          <td>
+            <input type="text" name="shares" id="shares" required>
+          </td>
+          <td>
+            <label for="liquidation_pref">Liquidation Pref.:</label>
+          </td>
+          <td>
+            <input type="text" name="liquidation_pref" id="liquidation_pref" required>
+          </td>
+          <td>
+            <label for="dividend_type">Dividend Type:</label>
+          </td>
+          <td>
+            <input type="text" name="dividend_type" id="dividend_type" required>
+          </td>
+          <td>
+            <label for="dividends">Dividends:</label>
+          </td>
+          <td>
+            <input type="text" name="dividends" id="dividends" required>
+          </td>
+          <td>
+            <label for="app">APP:</label>
+          </td>
+          <td>
+            <input type="text" name="app" id="app" required>
+          </td>
+          <td>
+            <label for="cap">Cap:</label>
+          </td>
+          <td>
+            <input type="text" name="cap" id="cap" required>
+          </td>
+          <td>
+            <label for="per_share_qpo_thres">Per Share QPO Thres.:</label>
+          </td>
+          <td>
+            <input type="text" name="per_share_qpo_thres" id="per_share_qpo_thres" required>
+          </td>
+          <td>
+            <label for="gp">GP %:</label>
+          </td>
+          <td>
+            <input type="text" name="gp" id="gp" required>
+          </td>
+          <td>
+            <label for="lifetime_fees">Lifetime Fees:</label>
+          </td>
+          <td>
+            <input type="text" name="lifetime_fees" id="lifetime_fees" required>
+          </td>
+          <td>
+            <label for="committed_capital">Committed Capital:</label>
+          </td>
+          <td>
+            <input type="text" name="committed_capital" id="committed_capital" required>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

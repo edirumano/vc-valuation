@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Investment Form Results</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 2rem;
+      }
+
+      h1 {
+        margin-bottom: 1rem;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Valuation Output</h1>
+    <table>
+      <tr>
+        <th>Field</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Result</td>
+        <td>{{ result }}</td>
+      </tr>
+      <tr>
+        <td>Value</td>
+        <td>{{ form.value }}</td>
+      </tr>
+      <tr>
+        <td>Series</td>
+        <td>{{ form.series }}</td>
+      </tr>
+      <tr>
+        <td>Security Type</td>
+        <td>{{ form.security_type }}</td>
+      </tr>
+      <tr>
+        <td>Investment</td>
+        <td>{{ form.investment }}</td>
+      </tr>
+      <tr>
+        <td>Shares</td>
+        <td>{{ form.shares }}</td>
+      </tr>
+      <tr>
+        <td>Liquidation Pref.</td>
+        <td>{{ form.liquidation_pref }}</td>
+      </tr>
+      <tr>
+        <td>Dividend Type</td>
+        <td>{{ form.dividend_type }}</td>
+      </tr>
+      <tr>
+        <td>Dividends</td>
+        <td>{{ form.dividends }}</td>
+      </tr>
+      <tr>
+        <td>APP</td>
+        <td>{{ form.app }}</td>
+      </tr>
+      <tr>
+        <td>Cap</td>
+        <td>{{ form.cap }}</td>
+      </tr>
+      <tr>
+        <td>Per Share QPO Thres.</td>
+        <td>{{ form.per_share_qpo_thres }}</td>
+      </tr>
+      <tr>
+        <td>GP %</td>
+        <td>{{ form.gp }}</td>
+      </tr>
+      <tr>
+        <td>Lifetime Fees</td>
+        <td>{{ form.lifetime_fees }}</td>
+      </tr>
+      <tr>
+        <td>Committed Capital</td>
+        <td>{{ form.committed_capital }}</td>
+      </tr>
+    </table>
+  </body>
+</html>
