@@ -1,62 +1,137 @@
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 
 
 class Investor:
-    def __init__(self,investorID, cumdistributed, invested):
+    def __init__(self,investorID,  invested=0):
         self.investorID = investorID
-        self.cumdistributed = cumdistributed
         self.invested = invested
+        self.cumdistributed = 0
     
 class Common:
-    def __init__(self, investorID, ranking, shares, active, distributed):
+    def __init__(self, investorID, ranking=0, shares=0, active=1, distributed=0):
         self.holder = investorID
         self.ranking = ranking
         self.shares = shares
         self.active = active
         self.distributed = distributed
+        self.type_name = "Common Stock"
+        
+    
+    def calc_conversion_value(self, company_val, com_securities, pref_securities):
+        if self.active == 1:
+            return 0
+        else:
 
+   
 class Preferred:
-    def __init__(self, investorID, ranking, app, liqpref, distributed):
+    def __init__(self, investorID, ranking, app, liqpref, distributed=0):
         self.holder = investorID
         self.ranking = ranking
         self.app = app
         self.liqpref = liqpref
         self.distributed = distributed
+    
 
-class Security:
-    valid_sec_types = ["red_pref", "red_pref_common", "conv_pref"]
-
-    def __init__(self, common=None, preferred=None, sec_type=None):
+class InvestorSecurity:
+    type_names = {"red_pref": "Redeemable Preferred", "part_pref": "Participating Preferred", "conv_pref": "Convertible Preferred"}
+    
+    def __init__(self, investorID, common=None, preferred=None, sec_type=None):
+        self.holder = investorID
         self.common = common
         self.preferred = preferred
         self.sec_type = sec_type
+        self.type_name = InvestorSecurity.type_names[sec_type]
         # self.cap = cap (define later and put in args)
         # self.QPO = QPO (define later and put in args)
 
-        if self.sec_type not in self.valid_sec_types:
-            raise ValueError("Invalid security type")
+
+
+def calculate_waterfall(InvestorSecurities, FounderShares, company_val):
+    # Initialize the waterfall
+    waterfall = []
+
+    # Obtain the preferred securities in InvestorSecurities
+    pref_securities = [sec.preferred for sec in InvestorSecurities if sec.preferred is not None]
+    # Sort the pref_securities by their ranking from highest to lowest
+    pref_securities.sort(key=lambda x: x.ranking, reverse=True)
+
+    # Obtain the common securities in InvestorSecuritie
+    com_securities = [sec.common for sec in InvestorSecurities if sec.common is not None]
+    # Append the founder common shares to the common securities
+    com_securities.append(FounderShares)
+
+    # Calculate the total app * liqpref for all preferred securities
+    total_pref_val = sum([sec.app * sec.liqpref for sec in pref_securities])
+
+    #Initialize the distributable amount
+    total_distributable = company_val
+
+    # Distribute the company_val among the preferred securities
+    for sec in pref_securities:
+        # Distribute to each preferred security the app*liqpref up to distributable amount
+        sec.distributed=min(sec.app * sec.liqpref, max(total_distributable,0))
+        total_distributable -= sec.distributed
+        waterfall.append([sec.holder,sec.ranking,sec.distributed])
+
+    # Distribute the remaining amount to the common securities
+    if (total_pref_val<company_val):
+        # For each common associated with a conv_pref, calculate the comppany value at which it converts
+        
+        
+    return waterfall
+
+
+def has_attribute(obj, attr):
+    return hasattr(obj, attr)
+
+# Add hasattr to the Jinja2 environment
+app.jinja_env.globals.update(hasattr=has_attribute)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/submit', methods=['POST',])
+def submit():
+    # Obtain the form data as a dictionary
+    form_data = request.form.to_dict()
+
+    # Initialize the founder and founder shares
+    Founder = Investor(investorID="Founder")
+    founder_com_shares = float(form_data.get('founder_common_shares',0))
+    FounderShares   = Common(investorID=Founder.investorID, shares=founder_com_shares)
+
+    # Initialize the VC investor
+    VCInvestor = Investor(investorID="VC Investor")
+
+    # Obtain Series A security data
+    serA_sec_type = form_data.get('serA_sec_type',None)
+    serA_app = float(form_data.get('serA_app',0))
+    serA_liqpref = float(form_data.get('serA_liqpref',0))
+    serA_shares = float(form_data.get('serA_shares',0))
+
+    # Initialize the Series A security
+    seriesA_pref = Preferred(investorID=VCInvestor.investorID, ranking=1, app=serA_app, liqpref=serA_liqpref)
+    if serA_sec_type == "red_pref":
+        seriesA_com = None
+    else:
+        seriesA_com = Common(investorID=VCInvestor.investorID, shares=serA_shares)
+        if serA_sec_type == "conv_pref":
+            seriesA_com.active = 0
+    SeriesA = InvestorSecurity(investorID=VCInvestor.investorID, common=seriesA_com, preferred=seriesA_pref, sec_type=serA_sec_type)
     
+    company_val = float(form_data.get('company_val',1000))
 
-# Set initial investors consititng of Founder and VC Investor
-Founder = Investor("Founder",cumdistributed=0,invested=0)
-VCInvestor = Investor("VC Investor",cumdistributed=0,invested=0)
+    InvestorSecurities= [SeriesA]
+    waterfall = calculate_waterfall(InvestorSecurities, FounderShares, company_val)
 
-# Set initial underlying securities consisting of common and preferred
-founder_shares   = Common("Founder",ranking=0,shares=100,active=1,distributed=0)
-seriesA_pref = Preferred("VC Investor",ranking=1,app=50,liqpref=1.5,distributed=0)
-seriesA_common = Common("VC Investor",ranking=0,shares=10,active=0,distributed=0)
-
-# Series A security consits of a common and preferred; the common is contingent on the preferred
-seriesA = Security(common=seriesA_common, preferred=seriesA_pref, sec_type="conv_pref")
+    return render_template('response.html', form=request.form, Founder=Founder, VCInvestor=VCInvestor, FounderShares=FounderShares, SeriesA=SeriesA,waterfall=waterfall)
 
 
-# obtain the total common shares from founder and series A investor
-total_common = founder_shares.shares + seriesA.common.shares
 
-# print the total commoon shares
-print("Total Common Shares: ", total_common)
 
 
 '''
@@ -109,6 +184,20 @@ if current rank filled != yes:
         save remaining to 0
         change filled to yes
         current rank = current rank - 1
+
+
+# start with pref
+    collect all the pref, app and liqpref, sort by ranking
+    distribute to the pref until the pref is filled
+
+# then move to commmon
+    collect all the commmon, active and inactive
+    if any inactive, check whether they should be made active prior to the distribution
+    distribute to the active commmon until company val is done
+
+# then summarize distributions by security and holder
+
+        
         
 Keep track:
 - total distributions at company val
@@ -140,7 +229,7 @@ active if total distributions to common >= total distributions to security other
 For each security with a conversion, cap or QPO:
 
 Start with highest ranked security and assume it's all common 
-... issue is the contigencies with other potentially converting instruments.. 
+ issue is the contigencies with other potentially converting instruments.. 
 
 
 RP - pref not contingent, no common
@@ -201,26 +290,4 @@ Then do this for each $1 or each $0.1 until some value
 
 Chart the total amount distributed to common and conv_pref at each valuation
 
-
-
 '''
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/submit', methods=['POST',])
-def submit():
-
-    # Container 1: Obtain values of all securities submitted in previous page
-
-    # Container 2: Calculate returns for all securities 
-
-    # Container 3: Generate charts
-
-    # Container 4: Goal-seek/iterate to find optimal values for certain attributes 
-
-    value = float(request.form['value'])
-    shares = float(request.form['shares'])
-    result = value * shares
-    return render_template('response.html', form=request.form, result=result)
