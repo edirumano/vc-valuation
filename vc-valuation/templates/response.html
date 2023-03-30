@@ -1,50 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Investment Form Results</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        margin: 2rem;
-      }
-
-      h1 {
-        margin-bottom: 1rem;
-      }
-
-      table {
-        border-collapse: collapse;
-        width: 100%;
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 0.5rem;
-        text-align: left;
-      }
-
-      th {
-        background-color: #f2f2f2;
-      }
-    </style>
+    <title>Waterfall Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
+    <div class="container">
     <h1>InvestorID Listing</h1>
     <table>
-      <tr>Founder</tr>
-      <tr>VC Investor</tr>
+      <tr><td>{{ Founder.investorID }}</td></tr>
+      <tr><td>{{ VCInvestor.investorID }}</td></tr>
     </table>
-    
-
+    </div>
+    <br />
+    <br />
+    <div class="container">
     <h1>Summary Cap Table</h1>
     <table>
       <tr>
@@ -55,73 +25,40 @@
         <th>Liquidation Pref.</th>
         <th>Commmon Shares</th>
       </tr>
-      
-
-
+      <tr class="summary">
+        <td>{{ FounderShares.holder }}</td>
+        <td>{{ FounderShares.type_name }}</td>
+        <td>{{ FounderShares.ranking }}</td>
+        <td class="empty-cell"> N/A </td>
+        <td class="empty-cell"> N/A</td>
+        <td>{{ FounderShares.shares }}</td>
+      </tr>
+      <tr class="summary">
+        <td>{{ SeriesA.holder }}</td>
+        <td>{{ SeriesA.type_name }}</td>
+        <td>{{ SeriesA.preferred.ranking }}</td>
+        <td>{{ SeriesA.preferred.app }}</td>
+        <td>{{ SeriesA.preferred.liqpref }}x</td>
+        <td>{{ 'None' if not hasattr(SeriesA, 'common') or SeriesA.common is none else SeriesA.common.shares }}</td>
+      </tr>
+   
+    </table>
+  </div>
+    <br />
+    <br />
+    <div class="container">
+    <h1>Waterfall Results</h1>
+    <table>
       <tr>
-        <th>Field</th>
-        <th>Value</th>
+        <th>Company Valuation:</th>
       </tr>
       <tr>
-        <td>Result</td>
-        <td>{{ result }}</td>
-      </tr>
-      <tr>
-        <td>Value</td>
-        <td>{{ form.value }}</td>
-      </tr>
-      <tr>
-        <td>Series</td>
-        <td>{{ form.series }}</td>
-      </tr>
-      <tr>
-        <td>Security Type</td>
-        <td>{{ form.security_type }}</td>
-      </tr>
-      <tr>
-        <td>Investment</td>
-        <td>{{ form.investment }}</td>
-      </tr>
-      <tr>
-        <td>Shares</td>
-        <td>{{ form.shares }}</td>
-      </tr>
-      <tr>
-        <td>Liquidation Pref.</td>
-        <td>{{ form.liquidation_pref }}</td>
-      </tr>
-      <tr>
-        <td>Dividend Type</td>
-        <td>{{ form.dividend_type }}</td>
-      </tr>
-      <tr>
-        <td>Dividends</td>
-        <td>{{ form.dividends }}</td>
-      </tr>
-      <tr>
-        <td>APP</td>
-        <td>{{ form.app }}</td>
-      </tr>
-      <tr>
-        <td>Cap</td>
-        <td>{{ form.cap }}</td>
-      </tr>
-      <tr>
-        <td>Per Share QPO Thres.</td>
-        <td>{{ form.per_share_qpo_thres }}</td>
-      </tr>
-      <tr>
-        <td>GP %</td>
-        <td>{{ form.gp }}</td>
-      </tr>
-      <tr>
-        <td>Lifetime Fees</td>
-        <td>{{ form.lifetime_fees }}</td>
-      </tr>
-      <tr>
-        <td>Committed Capital</td>
-        <td>{{ form.committed_capital }}</td>
+        <td>{{ form.company_val }}</td>
       </tr>
     </table>
+    <h2>Company Val:</h2>
+    <h2>{{ waterfall }}</h2>
+
+    </div>
   </body>
 </html>
