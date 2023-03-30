@@ -8,46 +8,56 @@
           margin: 0;
           padding: 0;
         }
+
+        .center {
+
+          text-align:center;
+          margin-left: auto;
+          margin-right: auto;
+        }
   
         body {
           font-family: Arial, Helvetica, sans-serif;
           font-size: 11px;
-          line-height: 1.5;
+          line-height: 1;
         }
   
         form {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
+          align-items: center;
+          align-self: center;
+          align-content: center;
           margin: 2rem;
         }
   
         label {
           display: block;
           width: 100%;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.1rem;
+          text-align: center;
         }
   
         input {
           display: block;
           width: 100%;
-          padding: 0.5rem;
-          margin-bottom: 1rem;
+          padding: 0.1rem;
+          margin-bottom: 0.1rem;
           border-radius: 0.25rem;
           border: 1px solid #ccc;
-          transition: border-color 0.3s ease-in-out;
+          transition: border-color 0.1s ease-in-out;
+          text-align: right;
+          align-self: center;
         }
   
         input:focus {
           outline: none;
-          border-color: #007bff;
+          border: 3px solid #007bff;
         }
   
         button[type="submit"] {
           display: block;
           margin-top: 1rem;
           padding: 0.5rem;
-          background-color: #007bff;
+          background-color: #0047d5;
           color: #fff;
           border: none;
           border-radius: 0.25rem;
@@ -55,105 +65,137 @@
         }
   
         button[type="submit"]:hover {
-          background-color: #0069d9;
+          background-color: #07d1ff;
         }
+
+        h1 {
+          font-size: 18px;
+          font-weight: bold;
+          text-align: center;
+          color: #048125;
+          font-weight: bolder;
+        }
+        
+        h2 {
+          font-size: 12px;
+          font-weight: bold;
+          text-align: center;
+          color: #000000;
+          font-weight: bold;
+          padding: 5px;
+        }
+        th {
+          font-size: 13px;
+          font-weight: bold;
+          text-align: center;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        #comment {
+          font-size: 10px;
+          font-style: italic;
+          color: #fe0000;
+          text-indent: 10px;
+        }
+
+        .empty-cell {
+          background-color: #dedede;
+          text-align: center;
+        }
+
+        select[required] {
+          width: 100%;
+          padding: 0.2rem;
+          border-radius: 0.25rem;
+          border: 1px solid #ccc;
+          background-color: #eaf3fd;
+          text-align: center;
+        }
+
+
+
       </style>
   </head>
   <body>
+    <br />
     <h1>Capitalization Table</h1>
-   
+   <p id="comment">Last edited: March 29, 2023</p>
+   <div class=""center">
     <form method="post" action="{{ url_for('submit') }}">
+      <div style="display:block;">
       <table>
         <tr>
-          <td>
-            <label for="value">Value:</label>
-          </td>
-          <td>
-            <input type="text" name="value" id="value" required>
-          </td>
-          <td>
-            <label for="series">Series:</label>
-          </td>
-          <td>
-            <input type="text" name="series" id="series" required>
-          </td>
-          <td>
-            <label for="security_type">Security Type:</label>
-          </td>
-          <td>
-            <input type="text" name="security_type" id="security_type" required>
-          </td>
-          <td>
-            <label for="investment">Investment:</label>
-          </td>
-          <td>
-            <input type="text" name="investment" id="investment" required>
-          </td>
-          <td>
-            <label for="shares">Shares:</label>
-          </td>
-          <td>
-            <input type="text" name="shares" id="shares" required>
-          </td>
-          <td>
-            <label for="liquidation_pref">Liquidation Pref.:</label>
-          </td>
-          <td>
-            <input type="text" name="liquidation_pref" id="liquidation_pref" required>
-          </td>
-          <td>
-            <label for="dividend_type">Dividend Type:</label>
-          </td>
-          <td>
-            <input type="text" name="dividend_type" id="dividend_type" required>
-          </td>
-          <td>
-            <label for="dividends">Dividends:</label>
-          </td>
-          <td>
-            <input type="text" name="dividends" id="dividends" required>
-          </td>
-          <td>
-            <label for="app">APP:</label>
-          </td>
-          <td>
-            <input type="text" name="app" id="app" required>
-          </td>
-          <td>
-            <label for="cap">Cap:</label>
-          </td>
-          <td>
-            <input type="text" name="cap" id="cap" required>
-          </td>
-          <td>
-            <label for="per_share_qpo_thres">Per Share QPO Thres.:</label>
-          </td>
-          <td>
-            <input type="text" name="per_share_qpo_thres" id="per_share_qpo_thres" required>
-          </td>
-          <td>
-            <label for="gp">GP %:</label>
-          </td>
-          <td>
-            <input type="text" name="gp" id="gp" required>
-          </td>
-          <td>
-            <label for="lifetime_fees">Lifetime Fees:</label>
-          </td>
-          <td>
-            <input type="text" name="lifetime_fees" id="lifetime_fees" required>
-          </td>
-          <td>
-            <label for="committed_capital">Committed Capital:</label>
-          </td>
-          <td>
-            <input type="text" name="committed_capital" id="committed_capital" required>
-          </td>
+          <th>Security Name</th>
+          <th>Security Type</th>
+          <th>APP ($M)</th>
+          <th>Liquidation Pref.</th>
+          <th>Common Shares</th>
         </tr>
-      </table>
-      <br />
-      <br />
-      <button type="submit">Submit</button>
+        <tr>
+          <td>
+           <h2>Founder Shares</h2>
+          </td>
+          <td>
+            <select name="com_sec" id="com_sec" required>
+              <option value="com">Common Stock</option>
+            </select>            
+          </td>
+          <td class="empty-cell">N/A
+          </td>
+          <td class="empty-cell">N/A
+          </td>
+          <td>
+            <input type="number" min="0" name="com_shares" id="com_shares" required>
+          </td>
+       </tr>
+       <tr>
+        <td>
+         <h2>Series A</h2>
+        </td>
+        <td>
+          <select name="security_type" id="security_type" required>
+            <option value="conv_pref">Convertible Preferred</option>
+            <option value="red_pref">Redeemable Preferred</option>
+            <option value="part_pref">Participating Preferred</option>
+          </select>            
+        </td>
+        <td>
+          <input type="number" min="0" name="pref_a_app" id="pref_a_app" required>
+        </td>
+        <td>
+          <input type="number" min="0" name="pref_a_liqpref" id="pref_a_liqpref" required>
+        </td>
+        <td>
+          <input type="number" min="0" name="pref_a_shares" id="pref_a_shares" required>
+        </td>
+      </tr>
+      </table>   
+      </div>
+      <br>
+      <br>
+      <div style="display: block;">
+        <button type="submit">Submit</button>
+      </div>
+     
     </form>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const securityTypeSelect = document.getElementById('security_type');
+        const lastCell = document.querySelector('tr:last-of-type td:last-of-type');
+      
+        securityTypeSelect.addEventListener('change', () => {
+          if (securityTypeSelect.value === 'red_pref') {
+            lastCell.innerHTML = 'N/A';
+            lastCell.classList.add('empty-cell');
+          } else {
+            lastCell.innerHTML = '<input type="number" min="0" name="pref_a_shares" id="pref_a_shares" required>';
+            lastCell.classList.remove('empty-cell');
+          }
+        });
+      });
+    </script>
+    
   </body>
 </html>
