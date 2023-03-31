@@ -5,60 +5,88 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
+
+    <p id="comment">Last edited: March 31, 2023</p>
+
+    <h1>Investor Information</h1>
     <div class="container">
-    <h1>InvestorID Listing</h1>
-    <table>
-      <tr><td>{{ Founder.investorID }}</td></tr>
-      <tr><td>{{ VCInvestor.investorID }}</td></tr>
-    </table>
+      <table>
+        <tr>
+          <th>Investor</th>
+          <th>GP %</th>
+          <th>Lifetime Fees</th>
+          <th>Commmitted Capital</th>
+        </tr>
+        {% for investor in investors %}
+        <tr>
+          <td>{{ investor.name }}</td>
+          <td>{{ investor.gppercent }}</td>
+          <td>{{ investor.fees }}</td>
+          <td>{{ 'N/A' if not hasattr(investor, 'comcap') or investor.comcap ==0 else investor.comcap }}</td>
+        </tr>
+        {% endfor %}
+      </table>      
+    </div> 
+    <br />
+    <br />
+    <h1>Securities Information</h1>
+    <div class="container">
+      <table>
+        <tr>
+          <th>Investor</th>
+          <th>Security Type</th>
+          <th>Ranking</th>
+          <th>APP ($M) </th>
+          <th>Liquidation Pref.</th>
+          <th>Commmon Shares</th>
+          <th>Active Status</th>
+        </tr>
+        {% for security in securities %}
+        <tr>
+          <td>{{ security.holder }}</td>
+          <td>{{ security.type_name }}</td>
+          <td>{{ security.ranking }}</td>
+          <td>{{ 'N/A' if not hasattr(security, 'app') or security.app == 0 else security.app }}</td>
+          <td>{{ 'N/A' if not hasattr(security, 'liqpref') or security.liqpref ==0 else security.liqpref }}</td>
+          <td>{{ 'N/A' if not hasattr(security, 'comshares') or security.comshares ==0 else security.comshares }}</td>
+          <td>{{ security.active }}</td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
     <br />
     <br />
     <div class="container">
-    <h1>Summary Cap Table</h1>
-    <table>
-      <tr>
-        <th>Investor</th>
-        <th>Security</th>
-        <th>Ranking</th>
-        <th>APP ($M) </th>
-        <th>Liquidation Pref.</th>
-        <th>Commmon Shares</th>
-      </tr>
-      <tr class="summary">
-        <td>{{ FounderShares.holder }}</td>
-        <td>{{ FounderShares.type_name }}</td>
-        <td>{{ FounderShares.ranking }}</td>
-        <td class="empty-cell"> N/A </td>
-        <td class="empty-cell"> N/A</td>
-        <td>{{ FounderShares.shares }}</td>
-      </tr>
-      <tr class="summary">
-        <td>{{ SeriesA.holder }}</td>
-        <td>{{ SeriesA.type_name }}</td>
-        <td>{{ SeriesA.preferred.ranking }}</td>
-        <td>{{ SeriesA.preferred.app }}</td>
-        <td>{{ SeriesA.preferred.liqpref }}x</td>
-        <td>{{ 'None' if not hasattr(SeriesA, 'common') or SeriesA.common is none else SeriesA.common.shares }}</td>
-      </tr>
-   
-    </table>
-  </div>
-    <br />
-    <br />
-    <div class="container">
     <h1>Waterfall Results</h1>
-    <table>
-      <tr>
-        <th>Company Valuation:</th>
-      </tr>
-      <tr>
-        <td>{{ form.company_val }}</td>
-      </tr>
-    </table>
-    <h2>Company Val:</h2>
-    <h2>{{ waterfall }}</h2>
-
+    <div class="container">
+      <table>
+        <tr>
+          <th>Company Valuation:</th>
+        </tr>
+        <tr>
+          <td>{{ company_val }}</td>
+        </tr>
+        <tr>
+          <th>Waterfall Results:</th>
+        <tr>
+          <td>Company Valuation</td>
+          {% for security in securities %}
+          <td>{{ security.holder }} <br> {{ security.type_name }}</td>
+          {% endfor %}
+        </tr>
+        </tr>      
+          {% for row in waterfall[1:] %}
+          <tr>
+              {% for value in row %}
+              <td>
+                {{ '%.2f' % value }} &nbsp;              
+              </td>
+              {% endfor %}
+          </tr>
+           {% endfor %}      
+      </table>
+      
+      <img src="{{ url_for('static', filename='charts/wf_all_{}.png'.format(ts)) }}" alt="Waterfall All Securities">
     </div>
   </body>
 </html>

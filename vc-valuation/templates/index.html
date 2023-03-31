@@ -7,88 +7,187 @@
   </head>
   <body>
     <br />
-  <div class="container">
-    <h1>Capitalization Table</h1>
-   <p id="comment">Last edited: March 30, 2023</p>
-   <div class=""center">
+    <p id="comment">Last edited: March 31, 2023</p>
+
     <form method="post" action="{{ url_for('submit') }}">
-      <div style="display:block;">
-      <table>
+    <h1>Investor Listing</h1>
+    <div class="container">
+    <table id="MyTable">
+      <tr>
+        <th>Investor</th>
+        <th>GP %</th>
+        <th>Lifetime Fees</th>
+        <th>Commmitted Capital</th>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" placeholder="Founder" name="investors[0].name" id="investors[0].name">
+        </td>
+        <td class="empty-cell">N/A</td>
+        <td class="empty-cell">N/A</td>
+        <td class="empty-cell">N/A</td>
+      </tr>
         <tr>
-          <th>Security Name</th>
-          <th>Security Type</th>
-          <th>APP ($M)</th>
-          <th>Liquidation Pref.</th>
-          <th>Common Shares</th>
+          <td>
+            <input type="text" placeholder="VC Investor 1" name="investors[1].name" id="investors[1].name">
+          </td>
+          <td>
+            <input type="text" pattern="[0-9]+([.][0-9]+)?" name="investors[1].gppercent" id="investors[1].gppercent" required>
+          </td>
+          <td>
+            <input type="text"  pattern="[0-9]+([.][0-9]+)?" name="investors[1].fees" id="investors[1].fees" required>
+          </td>
+          <td>
+            <input type="text"  pattern="[0-9]+([.][0-9]+)?" name="investors[1].comcap" id="investors[1].comcap" required>
+          </td>
         </tr>
         <tr>
           <td>
-           <h2>Founder Shares</h2>
+            <input type="text"  placeholder="VC Investor 2" name="investors[2].name" id="investors[2].name">
           </td>
           <td>
-            <select name="founder_sec" id="founder_sec" required>
-              <option value="com">Common Stock</option>
+            <input type="text" pattern="[0-9]+([.][0-9]+)?" name="investors[2].gppercent" id="investors[2].gppercent" required>
+          </td>
+          <td>
+            <input type="text"  pattern="[0-9]+([.][0-9]+)?" name="investors[2].fees" id="investors[2].fees" required>
+          </td>
+          <td>
+            <input type="text"  pattern="[0-9]+([.][0-9]+)?" name="investors[2].comcap" id="investors[2].comcap" required>
+          </td>
+        </tr>
+    </table>      
+    </div> 
+    <br />
+    <br />
+    
+ 
+    <h1>Capitalization Table</h1>
+    <div class="container">
+    <div class=""center">
+        <div style="display:block;">
+        <table>
+          <tr>
+            <th>Security Name</th>
+            <th>Security Type</th>
+            <th>APP ($M)</th>
+            <th>Liquidation Pref.</th>
+            <th>Common Shares</th>
+          </tr>
+          <tr>
+            <td>
+            <h2>Founder Shares</h2>
+            </td>
+            <td>
+              <select name="securities[0].type" id="securities[0].type" required>
+                <option value="com">Common Stock</option>
+              </select>            
+            </td>
+            <td class="empty-cell">N/A
+            </td>
+            <td class="empty-cell">N/A
+            </td>
+            <td>
+              <input type="number" min="0" name="securities[0].comshares" id="securities[0].comshares" required>
+            </td>
+        </tr>
+        <tr>
+          <td>
+          <h2>Series A</h2>
+          </td>
+          <td>
+            <select name="securities[1].type" id="securities[1].type" required>
+              <option value="conv_pref">Convertible Preferred</option>
+              <option value="red_pref">Redeemable Preferred</option>
+              <option value="part_pref">Participating Preferred</option>
             </select>            
           </td>
-          <td class="empty-cell">N/A
-          </td>
-          <td class="empty-cell">N/A
+          <td>
+            <input type="text" pattern="[0-9]+([.][0-9]+)?" name="securities[1].app" id="securities[1].app" required>
           </td>
           <td>
-            <input type="number" min="0" name="founder_com_shares" id="founder_com_shares" required>
+            <input type="text" pattern="[0-9]+([.][0-9]+)?" name="securities[1].liqpref" id="securities[1].liqpref" required>
           </td>
-       </tr>
-       <tr>
+          <td>
+            <input type="number" min="0" name="securities[1].comshares" id="securities[1].comshares" required>
+          </td>
+        </tr>
+      </tr>
+      <tr>
         <td>
-         <h2>Series A</h2>
+        <h2>Series B</h2>
         </td>
         <td>
-          <select name="serA_sec_type" id="serA_sec_type" required>
+          <select name="securities[2].type" id="securities[2].type" required>
             <option value="conv_pref">Convertible Preferred</option>
             <option value="red_pref">Redeemable Preferred</option>
             <option value="part_pref">Participating Preferred</option>
           </select>            
         </td>
         <td>
-          <input type="text" pattern="[0-9]+([.][0-9]+)?" name="serA_app" id="serA_app" required>
+          <input type="text" pattern="[0-9]+([.][0-9]+)?" name="securities[2].app" id="securities[2].app" required>
         </td>
         <td>
-          <input type="text" pattern="[0-9]+([.][0-9]+)?" name="serA_liqpref" id="serA_liqpref" required>
+          <input type="text" pattern="[0-9]+([.][0-9]+)?" name="securities[2].liqpref" id="securities[2].liqpref" required>
         </td>
         <td>
-          <input type="number" min="0" name="serA_shares" id="serA_shares" required>
+          <input type="number" min="0" name="securities[2].comshares" id="securities[2].comshares" required>
         </td>
       </tr>
-      </table>   
+        </table>   
+        </div>
+        <br />
+        <br />
       </div>
-      <br />
-      <br />
-      <h3>Company Valuation:</h3>
-      <input type="number" min="0" name="company_val" id="company_val" required>
-      <br />
-      <br />
-      <div style="display: block;">
-        <button type="submit">Submit</button>
-      </div>
-     
-    </form>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const securityTypeSelect = document.getElementById('serA_sec_type');
-        const lastCell = document.querySelector('tr:last-of-type td:last-of-type');
-      
-        securityTypeSelect.addEventListener('change', () => {
-          if (securityTypeSelect.value === 'red_pref') {
-            lastCell.innerHTML = 'N/A';
-            lastCell.classList.add('empty-cell');
-          } else {
-            lastCell.innerHTML = '<input type="number" min="0" name="serA_shares" id="serA_shares" required>';
-            lastCell.classList.remove('empty-cell');
-          }
+
+  
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const securityTypeSelect = document.getElementById('securities[1].type');
+          const lastCell = document.getElementById('securities[1].comshares').closest('td');
+        
+          securityTypeSelect.addEventListener('change', () => {
+            if (securityTypeSelect.value === 'red_pref') {
+              lastCell.innerHTML = 'N/A';
+              lastCell.classList.add('empty-cell');
+            } else {
+              lastCell.innerHTML = '<input type="number" min="0" name="securities[1].comshares" id="securities[1].comshares" required>';
+              lastCell.classList.remove('empty-cell');
+            }
+          });
         });
-      });
-    </script>
-  </div>
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const securityTypeSelect = document.getElementById('securities[2].type');
+          const lastCell = document.getElementById('securities[2].comshares').closest('td');
+        
+          securityTypeSelect.addEventListener('change', () => {
+            if (securityTypeSelect.value === 'red_pref') {
+              lastCell.innerHTML = 'N/A';
+              lastCell.classList.add('empty-cell');
+            } else {
+              lastCell.innerHTML = '<input type="number" min="0" name="securities[2].comshares" id="securities[2].comshares" required>';
+              lastCell.classList.remove('empty-cell');
+            }
+          });
+        });
+      </script>
+<br />
+<br />
+<h1>Company</h1>
+<div class="container">
+<h3>Company Valuation:</h3>
+<input type="text"  pattern="[0-9]+([.][0-9]+)?" name="company_val" id="company_val" required>
+
+</div>
+<br />
+<br />
+    <div class="button-container">
+
+      <br />
+      <br />  
+      <button type="submit">Submit</button>
+    </div>
+  </form>
   </body>
 </html>
